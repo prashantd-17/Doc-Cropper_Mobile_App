@@ -1,19 +1,38 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import DocumentPhotoPicker from './components/DocumentPhotoPicker';
+import ImageCropScreen from './components/imageCropScreen';
+
+
+const Stack = createStackNavigator();
+
 export default function App() {
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="ImageCropScreen" component={ImageCropScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+// Your original home screen UI
+function HomeScreen({navigation}:any) {
+  return (
+    <View style={styles.safeArea}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerText}>My App</Text>
       </View>
 
       {/* Main Content */}
-      <ScrollView contentContainerStyle={styles.content}>
+      <View style={styles.content}>
         <Text>Main content goes here...</Text>
-        <DocumentPhotoPicker></DocumentPhotoPicker>
-      </ScrollView>
+        <DocumentPhotoPicker navigation={navigation} />
+      </View>
 
       {/* Footer */}
       <View style={styles.footer}>
@@ -21,7 +40,7 @@ export default function App() {
           <Text style={styles.footerText}>Footer Action</Text>
         </Pressable>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -3,7 +3,6 @@ import { View, Button, Image, PermissionsAndroid, Platform, StyleSheet, Alert } 
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 import PhotoManipulator from 'react-native-photo-manipulator';
-import ImagePicker from 'react-native-image-crop-picker';
 
 const DOCUMENT_PRESETS = {
   PAN: { width: 600, height: 300 },
@@ -11,7 +10,7 @@ const DOCUMENT_PRESETS = {
   AADHAR: { width: 800, height: 600 },
 };
 
-export default function DocumentPhotoPicker() {
+export default function DocumentPhotoPicker({navigation} : any) {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
 const requestPermissions = async (): Promise<boolean> => {
@@ -67,9 +66,7 @@ const pickImage = async (fromCamera: boolean) => {
     includeBase64: false,
   });
 
-  if (result.didCancel) {
-    return;
-  }
+  if (result.didCancel) return;
 
   if (result.errorMessage) {
     Alert.alert('Error', result.errorMessage);
@@ -77,7 +74,20 @@ const pickImage = async (fromCamera: boolean) => {
   }
 
   if (result.assets && result.assets[0]?.uri) {
-    cropAndCompress(result.assets[0].uri, 'PASSPORT');
+    navigation.navigate('ImageCropScreen', {
+      imageUri: result.assets[0].uri,
+      preset: DOCUMENT_PRESETS.PASSPORT,
+      onDone: async (croppedUri: string) => {
+        const resized = await ImageResizer.createResizedImage(
+          croppedUri,
+          DOCUMENT_PRESETS.PASSPORT.width,
+          DOCUMENT_PRESETS.PASSPORT.height,
+          'JPEG',
+          60
+        );
+        setImageUri(resized.uri);
+      },
+    });
   }
 };
 
