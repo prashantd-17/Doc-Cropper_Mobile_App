@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import DocumentPhotoPicker from './components/DocumentPhotoPicker';
 import ImageCropScreen from './components/imageCropScreen';
 
-
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -19,7 +18,6 @@ export default function App() {
   );
 }
 
-// Your original home screen UI
 function HomeScreen({navigation}:any) {
   return (
     <View style={styles.safeArea}>

@@ -1,4 +1,3 @@
-// screens/ImageCropScreen.tsx
 import React, { useEffect } from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -20,7 +19,7 @@ export default function ImageCropScreen({ route, navigation }:any) {
         onDone(image.path);
         navigation.goBack();
       })
-      .catch(() => navigation.goBack()); // user cancelled
+      .catch(() => navigation.goBack());
   }, []);
 
   return (
